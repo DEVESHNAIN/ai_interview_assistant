@@ -1,14 +1,8 @@
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
-import os
-from dotenv import load_dotenv
 import re
 
-# Load environment variables
-load_dotenv()
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
-def evaluate_answer(candidate_answer):
+def evaluate_answer(candidate_answer, api_key):
     """
     Use LLM to evaluate candidate answer on a scale of 1-5
     1: Completely wrong
@@ -19,6 +13,9 @@ def evaluate_answer(candidate_answer):
     """
     if not candidate_answer or candidate_answer.strip() == "":
         return 1
+    
+    if not api_key:
+        raise ValueError("API key is required for evaluation")
     
     prompt = PromptTemplate(
         template="""
@@ -38,7 +35,7 @@ Format: SCORE: [number] REASON: [reason]
         input_variables=["answer"]
     )
     
-    llm = ChatGroq(model="llama-3.1-8b-instant", groq_api_key=GROQ_API_KEY, temperature=0.3)
+    llm = ChatGroq(model="llama-3.1-8b-instant", groq_api_key=api_key, temperature=0.3)
     chain = prompt | llm
     
     try:

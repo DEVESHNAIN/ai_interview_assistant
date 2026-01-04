@@ -125,7 +125,8 @@ def render_interview_interface(config, template):
                     followup_question, _ = parse_llm_response(response_text)
                     
                     # Evaluate answer
-                    score = evaluate_answer(user_input)
+                    api_key = config["groq_api_key"] if config["llm_choice"] == "Groq" else config["openai_api_key"]
+                    score = evaluate_answer(user_input, api_key)
                     st.session_state.session.add_turn(question, user_input, score, dimension=section_name)
                     
                     # Display score

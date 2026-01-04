@@ -1,9 +1,13 @@
 import yaml
+import os
+from dotenv import load_dotenv
 from interview_chain import build_interview_chain
 from evaluator import evaluate_answer
 from sessions import InterviewSession
 from report import generate_report
 
+# Load environment variables
+load_dotenv()
 
 def load_template():
     with open("templates/AI_engineer.yaml", "r") as f:
@@ -27,7 +31,13 @@ def parse_llm_response(response_text):
 
 def main():
     template = load_template()
-    chain = build_interview_chain()
+    
+    # Get API keys from environment
+    groq_api_key = os.getenv("GROQ_API_KEY")
+    if not groq_api_key:
+        raise ValueError("GROQ_API_KEY environment variable is not set. Please add it to your .env file.")
+    
+    chain = build_interview_chain("Groq", groq_api_key, "llama-3.1-8b-instant")
     
     # Collect candidate information
     print("="*50)
@@ -60,7 +70,7 @@ def main():
             followup_question, _ = parse_llm_response(response_text)
             
             # Evaluate candidate's answer using LLM
-            score = evaluate_answer(answer)
+            score = evaluate_answer(answer, groq_api_key)
             print(f"✓ Evaluation Score: {score}/5\n")
             session.add_turn(question, answer, score, dimension=section_name)
             
@@ -80,7 +90,7 @@ def main():
                 next_question, _ = parse_llm_response(response_text)
                 
                 # Evaluate follow-up answer using LLM
-                followup_score = evaluate_answer(followup_answer)
+                followup_score = evaluate_answer(followup_answer, groq_api_key)
                 print(f"✓ Evaluation Score: {followup_score}/5\n")
                 session.add_turn(followup_question, followup_answer, followup_score, dimension=section_name)
                 

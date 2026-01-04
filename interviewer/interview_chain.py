@@ -3,24 +3,11 @@ from langchain_openai import ChatOpenAI
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_groq import ChatGroq
 from langchain_community.chat_message_histories import ChatMessageHistory
-import os
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
-
-# Get API keys from environment
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-# Validate API keys
-if not GROQ_API_KEY:
-    raise ValueError("GROQ_API_KEY environment variable is not set. Please add it to your .env file.")
 
 # Session storage for conversation history
 session_store = {}
 
-def build_interview_chain():
+def build_interview_chain(llm_provider, api_key, model):
     prompt = PromptTemplate(
         template="""
 You are a technical interviewer conducting a {role} interview.
@@ -43,13 +30,10 @@ Candidate response:
         input_variables=["history", "input", "role"]
     )
 
-    # llm = ChatOpenAI(
-    #     model="gpt-4o-mini",
-    #     temperature=0.3,
-    #     api_key=OPENAI_API_KEY
-    # )
-
-    llm = ChatGroq(model="llama-3.1-8b-instant", groq_api_key=GROQ_API_KEY)
+    if llm_provider == "Groq":
+        llm = ChatGroq(model=model, groq_api_key=api_key, temperature=0.3)
+    else:
+        llm = ChatOpenAI(model=model, api_key=api_key, temperature=0.3)
 
     def get_session_history(session_id):
         if session_id not in session_store:
