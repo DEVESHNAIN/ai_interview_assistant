@@ -1,0 +1,26 @@
+role: AI Engineer
+duration_minutes: 30
+
+sections:
+  # - name: Python Fundamentals
+  #   weight: 0.4
+  #   questions:
+  #     - "How does Python manage memory?"
+  #     # - "What are common performance issues in Python services?"
+
+  - name: ML Basics
+    weight: 0.4
+    questions:
+      - "What is the difference between supervised and unsupervised learning?"
+      # - "What is overfitting and how can it be prevented?"
+
+  - name: Applied AI & LLMs
+    weight: 0.4
+    questions:
+      - "What is prompt engineering and why is it important?"
+      # - "What trade-offs did you notice when changing temperature?"
+
+  - name: Communication
+    weight: 0.2
+    questions:
+      - "How do you usually learn a new AI concept or tool?"
