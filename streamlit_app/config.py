@@ -1,6 +1,5 @@
 import streamlit as st
 import yaml
-import os
 
 
 def load_sidebar_config():
@@ -11,14 +10,12 @@ def load_sidebar_config():
     st.sidebar.subheader("API Keys")
     groq_api_key = st.sidebar.text_input(
         "Groq API Key",
-        value=os.getenv("GROQ_API_KEY", ""),
         type="password",
         help="Get your key from https://console.groq.com"
     )
     
     openai_api_key = st.sidebar.text_input(
         "OpenAI API Key",
-        value=os.getenv("OPENAI_API_KEY", ""),
         type="password",
         help="Get your key from https://platform.openai.com"
     )

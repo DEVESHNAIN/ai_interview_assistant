@@ -24,21 +24,18 @@ cd ai_assistance_interviewer
 pip install -r requirements.txt
 ```
 
-### 2. Configure API Keys
-Create a `.env` file in the project root:
-```env
-GROQ_API_KEY=your_groq_api_key_here
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-Or add them via the Streamlit sidebar when running the app.
-
-### 3. Run the Streamlit App
+### 2. Run the Streamlit App
 ```bash
 streamlit run app.py
 ```
 
 The app will open at `http://localhost:8501`
+
+### 3. Configure API Keys
+Enter your API keys in the **Sidebar** when the app starts:
+- **Groq API Key**: Get from https://console.groq.com
+OR
+- **OpenAI API Key**: Get from https://platform.openai.com
 
 ## Usage
 
